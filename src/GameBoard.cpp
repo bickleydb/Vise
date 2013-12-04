@@ -6,7 +6,6 @@
 #define PLAYER_ONE_PIECE  1
 #define PLAYER_TWO_PIECE  2
 
-//Okay, you can actually commit this.
 
 GameBoard::GameBoard() {
     
@@ -21,8 +20,8 @@ void GameBoard::makeGameBoard() {
     assignPointers();
 
 	
-	addPiece(10,9,1);
-	addPiece(11,9,2);
+	addPiece(10,10,1);
+	addPiece(11,10,2);
 	
 
     //addPiece(11, 10, 2);
@@ -33,7 +32,6 @@ void GameBoard::makeGameBoard() {
 
     p1Spares = 4;
     p2Spares = 4;
-    
     
 	
 }
@@ -476,9 +474,8 @@ bool GameBoard::playerStillInGame(int player){
     else if(piecesOnBoard + p2Spares==1) return false;
     
     //Now, check that the person has a move on their turn
-    bool canMoveOldPiece, canPlaceNewPiece;
-	canMoveOldPiece = false;
-	canPlaceNewPiece = false;
+    bool canMoveOldPiece = false;
+    bool canPlaceNewPiece = false;
     if (player==1 && playerOneTurn) {
         for (int x = 0; x < 20; x++) {
             for (int y = 0; y < 20; y++) {
