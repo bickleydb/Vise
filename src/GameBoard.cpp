@@ -6,10 +6,7 @@
 #define PLAYER_ONE_PIECE  1
 #define PLAYER_TWO_PIECE  2
 
-//Okay, you can actually commit this.
-
-GameBoard::GameBoard() {
-    
+GameBoard::GameBoard() { 
 }
 
 void GameBoard::makeGameBoard() {
@@ -19,23 +16,10 @@ void GameBoard::makeGameBoard() {
         board[i].resize(20);
     }
     assignPointers();
-
-	
 	addPiece(10,9,1);
 	addPiece(11,9,2);
-	
-
-    //addPiece(11, 10, 2);
-    //addPiece(12, 10, 2);
-    //addPiece(10, 11, 1);
-    //addPiece(10, 12, 1);
-
-
     p1Spares = 4;
     p2Spares = 4;
-    
-    
-	
 }
 
 void GameBoard::setPlayerOneTurn(bool turn){
@@ -67,13 +51,6 @@ int GameBoard::getP2Spares(){
  with pointers, the problem is in here.
  */
 void GameBoard::assignPointers() {
-	/*NOTE TO SELF
-     Ues X and Y coordinates instead of row and column*/
-    
-    //TODO:
-    //	Fix i == 0 pointers and i== 19 for odd and even rows
-    //	Fix k ==0 && k == 19 pointers for opposite reason
-    //	Double check all pointers
 	int idNum = 0;
 	for (int k = 0; k < 20; k++) {
 		for (int i = 0; i < 20; i++) {
@@ -208,9 +185,6 @@ void GameBoard::assignPointers() {
 					edit->southEast = &board[i+1][0];
 					edit->southWest = &board[i][0];
 					idNum++;
-				
-				
-                
 			}
 		}
 	}
@@ -253,9 +227,7 @@ void GameBoard::resetVise() {
                         cur->inVise = false;
             
                 }
-        
         }
-    
 }
 
 void GameBoard::returnDisconnectedPieces(){
@@ -298,7 +270,7 @@ void GameBoard::returnDisconnectedPieces(){
                         largestRedGroup = numGroupedPieces;
                 }
             }
-                }
+          }
         }
     //If we want to save a blue-only group
     if (largestGroup == 0 && !playerOneTurn) {
@@ -372,7 +344,7 @@ void GameBoard::returnDisconnectedPieces(){
                                 dijkstraRecursiveReturn(&board[i][j],new int[180],zero3);
                             }
                     }
-                        }
+                }
             }
         }
     }
@@ -440,7 +412,6 @@ bool GameBoard::inVise(int x, int y) {
             isInVise=true;
         }
         }
-    
     return isInVise;
 }
 
@@ -474,7 +445,6 @@ bool GameBoard::playerStillInGame(int player){
         }
     }
     else if(piecesOnBoard + p2Spares==1) return false;
-    
     //Now, check that the person has a move on their turn
     bool canMoveOldPiece, canPlaceNewPiece;
 	canMoveOldPiece = false;
@@ -509,15 +479,13 @@ bool GameBoard::playerStillInGame(int player){
                     if (canMoveOld(x, y)) {
                         canMoveOldPiece = true;
                     }
-                }
-                
+                } 
             }
         }
     }
     else if (player==2 && playerOneTurn){
         return true;
-    }
-    
+    } 
     return canMoveOldPiece||canPlaceNewPiece;
 }
 
@@ -609,7 +577,6 @@ int GameBoard::dijkstraRecursive(GameNode* cur, int* visited, int& arrSize) {
         curCount = curCount + dijkstraRecursive(cur->northWest,visited,arrSize);
         curCount = curCount + dijkstraRecursive(cur->southEast,visited,arrSize);
         curCount = curCount + dijkstraRecursive(cur->southWest,visited,arrSize);
-    
         return curCount;
         
         
@@ -660,7 +627,6 @@ void GameBoard::dijkstraRecursiveReturn(GameNode *cur, int *visited, int& arrSiz
             cur->pieceOn = NO_PLAYER_PIECE;
         }
     }
-        
         //If already visited
         for (int i = 0; i < 180; i++) {
                 if (cur->numIdentifier == visited[i])
@@ -669,7 +635,6 @@ void GameBoard::dijkstraRecursiveReturn(GameNode *cur, int *visited, int& arrSiz
         //Hadn't visited, so add it to visited
         visited[arrSize] = cur->numIdentifier;
         arrSize++;
-        
         //Move in each direction
     dijkstraRecursiveReturn(cur->west,visited,arrSize);
     dijkstraRecursiveReturn(cur->east,visited,arrSize);
@@ -693,12 +658,9 @@ bool GameBoard::p1InGroup(GameBoard::GameNode *cur, int *visited, int& arrSize){
                 return false;
     if (cur->pieceOn == PLAYER_ONE_PIECE)
         return true;
-        
-
         //Hadn't visited, so add it to visited
         visited[arrSize] = cur->numIdentifier;
         arrSize++;
-        
         //Move in each direction
     if (p1InGroup(cur->west,visited,arrSize)) return true;
     if (p1InGroup(cur->east,visited,arrSize)) return true;
@@ -706,7 +668,6 @@ bool GameBoard::p1InGroup(GameBoard::GameNode *cur, int *visited, int& arrSize){
     if (p1InGroup(cur->northWest,visited,arrSize)) return true;
     if (p1InGroup(cur->southEast,visited,arrSize)) return true;
     if (p1InGroup(cur->southWest,visited,arrSize)) return true;
-    
     return false;
 }
 
@@ -898,7 +859,6 @@ void GameBoard::removeVises() {
                                 removePiece(i,y);
                 }
         }
-    
 }
 
 /*Resets a hex to have n o piece*/
@@ -910,17 +870,6 @@ void GameBoard::removePiece(int x, int y) {
 /*Here is where I'm trying to figure out if a specific part WOULD be contigious or not if
  a piece is played there */
 bool GameBoard::wouldBeCont(int x, int y) {
-    
-//    int totalPieces = 0;
-//    for (int x = 0; x < 20; x++) {
-//                for (int y = 0; y < 20; y++) {
-//                        if (getPiece(x,y) != -1)
-//                                totalPieces++;
-//                }
-//        }
-    
-        //int numConnectedIfPlacedThere = 0;
-    //int* visited = new int[180];
         GameNode* check = &board[x][y];
     if (check->pieceOn == -1) {
         check->pieceOn = 1;
@@ -928,44 +877,6 @@ bool GameBoard::wouldBeCont(int x, int y) {
         check->pieceOn=-1;
         return shouldReturn;
     }
-
-    //numConnectedIfPlacedThere = dijkstraOldRecursive(check, visited, 0, check);
-        //if (playerOneTurn) {
-//    if (check->northWest->pieceOn != NO_PLAYER_PIECE)
-//        numConnectedIfPlacedThere += dijkstraRecursive(check->northWest, visited, 0);
-//    if (numConnectedIfPlacedThere==totalPieces) {
-//        return true;
-//    }
-//    if (check->northEast->pieceOn != NO_PLAYER_PIECE)
-//        numConnectedIfPlacedThere += dijkstraRecursive(check->northEast, visited, 30);
-//    if (numConnectedIfPlacedThere==totalPieces) {
-//        return true;
-//    }
-//    if (check->east->pieceOn != NO_PLAYER_PIECE)
-//        numConnectedIfPlacedThere += dijkstraRecursive(check->east, visited, 60);
-//    if (numConnectedIfPlacedThere==totalPieces) {
-//        return true;
-//    }
-//    if (check->west->pieceOn != NO_PLAYER_PIECE)
-//        numConnectedIfPlacedThere += dijkstraRecursive(check->west, visited, 90);
-//    if (numConnectedIfPlacedThere==totalPieces) {
-//        return true;
-//    }
-//    if (check->southEast->pieceOn != NO_PLAYER_PIECE)
-//        numConnectedIfPlacedThere += dijkstraRecursive(check->southEast, visited, 120);
-//    if (numConnectedIfPlacedThere==totalPieces) {
-//        return true;
-//    }
-//    if (check->southWest->pieceOn != NO_PLAYER_PIECE)
-//        numConnectedIfPlacedThere += dijkstraRecursive(check->southWest, visited, 150);
-//    if (numConnectedIfPlacedThere==totalPieces) {
-//        return true;
-//    }
-//    std::cout<<totalPieces<<", "<<numConnectedIfPlacedThere<<std::endl;
-//    if (numConnectedIfPlacedThere==totalPieces) {
-//        return true;
-//    }
-    
     return false;
 }
 
@@ -973,6 +884,4 @@ bool GameBoard::wouldBeCont(int x, int y) {
 //Determines if you can move old pieces to a certain place. X,Y is the corrdinates of a hex, and this is called on every hex on the board.
 bool GameBoard::canMoveOld(int x, int y){
     return wouldBeCont(x, y) && (jump(x, y)||isAdjTo(x, y, oldPieceToMoveX, oldPieceToMoveY));
-    
 }
-
